@@ -1,15 +1,16 @@
 import customtkinter as ctk
-
-
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         self.page = 1
 
-        # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
-        self.RegionInfo = None
-        self.SizeInfo = None
+        self.RegionInfo = ''
+        self.SizeInfo = ''
+
+        with open(r'datap.txt', 'w', encoding='utf-8') as data:
+            data.write(f"-r-{self.RegionInfo}\n")
+            data.write(f"-s-{self.SizeInfo}\n")
 
         self.geometry("500x500")
         self.title("Привет")
@@ -85,19 +86,23 @@ class App(ctk.CTk):
     def show_me_reccomendations(self):
         ...
     def on_done(self):
-
         if self.page == 1:
-            # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
             self.RegionInfo = self.region_select.get()
-            print(self.RegionInfo)
+            # with open(r'datap.txt',encoding='utf-8') as data:
+            #     for i in data:
+            #         if "-r-" in i:
+            #             self.RegionInfo = i[3:]
+
             self.page += 1
             self.clear_widgets()
             self.create_another_widgets()
 
         elif self.page == 2:
-            # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
             self.SizeInfo = self.size_select.get()
-            print(self.SizeInfo)
+            # with open(r'datap.txt',encoding='utf-8') as data:
+            #     for i in data:
+            #         if "-s-" in i:
+            #             self.SizeInfo = i[3:]
             self.page += 1
             self.clear_widgets()
             self.create_custom_tags()
@@ -116,3 +121,20 @@ class App(ctk.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+"""
+region = "Кубань"
+napravlen = "Средний бизнес"
+otras = "Машины"
+with open(r'data.txt', 'w', encoding='utf-8') as data:
+   data.write(f"-r-{region}\n")
+   data.write(f"-n-{napravlen}\n")
+   data.write(f"-o-{otras}\n")
+with open(r'data.txt', encoding='utf-8') as data:
+   for i in data:
+      if "-r-" in i:
+         print(f"Регион {i[3:]}")
+      if "-n-" in i:
+         print(f"Направление {i[3:]}")
+      if "-o-" in i:
+         print(f"Отрасль {i[3:]}")
+"""
