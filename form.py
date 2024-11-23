@@ -1,12 +1,25 @@
 import customtkinter as ctk
 
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry("400x240")
+        self.page = 1
+
+        # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
+        self.RegionInfo = None
+        self.SizeInfo = None
+
+        self.geometry("500x500")
         self.title("Привет")
         self.resizable(False, False)
+
+        # Конфигурация сетки
+        for i in range(5):
+            self.grid_rowconfigure(i, weight=1)
+        for j in range(5):
+            self.grid_columnconfigure(j, weight=1)
 
         self.RegionList = [
             "Республика Алтай", "Республика Башкортостан", "Республика Бурятия",
@@ -35,32 +48,71 @@ class App(ctk.CTk):
             "Ханты-Мансийский автономный округ - Югра", "Чукотский автономный округ",
             "Ямало-Ненецкий автономный округ"
         ]
+        self.SizeList = [
+            'Малый', 'Средний', 'Большой', 'Микро'
+        ]
 
-        # Создаем начальные элементы
         self.create_welcome_widgets()
 
     def create_welcome_widgets(self):
-        # Создание стартовых виджетов
         self.text_welcome = ctk.CTkLabel(self, text='Привет. Введи свой регион:', text_color='gray')
-        self.region_select = ctk.CTkOptionMenu(self, values=self.RegionList)
+        self.region_select = ctk.CTkComboBox(self, values=self.RegionList)
         self.region_done = ctk.CTkButton(self, text='Готово', command=self.on_done)
 
-        self.text_welcome.place(relx=0.5, rely=0.35, anchor="center")
-        self.region_select.place(relx=0.5, rely=0.45, anchor="center")
-        self.region_done.place(relx=0.5, rely=0.6, anchor="center")
+        self.text_welcome.grid(row=1, column=2, padx=10, pady=(10, 5), sticky='nsew')
+        self.region_select.grid(row=2, column=2, padx=10, pady=5, sticky='nsew')
+        self.region_done.grid(row=3, column=2, padx=10, pady=(15, 10), sticky='nsew')
 
+    def create_another_widgets(self):
+        self.choose_size_text = ctk.CTkLabel(self, text='Теперь выберите свой размер', text_color='gray')
+        self.size_select = ctk.CTkComboBox(self, values=self.SizeList)
+
+        self.choose_size_text.grid(row=1, column=2, sticky='nsew')
+        self.size_select.grid(row=2, column=2, pady=10, sticky='nsew')
+        self.region_done.grid(row=3, column=2, pady=10, sticky='nsew')
+
+    def create_custom_tags(self):
+        self.text_existing_tags = ctk.CTkLabel(self, text='Ваши теги:')
+        self.tag_region = ctk.CTkButton(self, text=f'{self.RegionInfo}', state='disabled')
+        self.tag_size = ctk.CTkButton(self, text=f'{self.SizeInfo}', state='disabled')
+        self.all_done = ctk.CTkButton(self, text='Готово', command=self.on_done)
+
+        self.text_existing_tags.grid(row=1, column=2, pady=10, sticky='nsew')
+        self.tag_region.grid(row=2,column=1,pady=10,sticky='nsew')
+        self.tag_size.grid(row=2,column=3,pady=10,sticky='nsew')
+        self.all_done.grid(row=3,column=2,pady=10)
+
+    def show_me_reccomendations(self):
+        ...
     def on_done(self):
-        # Удаление текущих виджетов
-        self.clear_widgets()
 
-        self.text_confirmed = ctk.CTkLabel(self, text="Отлично, давайте дальше.")
+        if self.page == 1:
+            # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
+            self.RegionInfo = self.region_select.get()
+            print(self.RegionInfo)
+            self.page += 1
+            self.clear_widgets()
+            self.create_another_widgets()
+
+        elif self.page == 2:
+            # ИЗМЕНИТЬ НА ЗАПРОСЫ В БД!!!!
+            self.SizeInfo = self.size_select.get()
+            print(self.SizeInfo)
+            self.page += 1
+            self.clear_widgets()
+            self.create_custom_tags()
+
+        elif self.page == 3:
+            #pars pars pars
+            self.page += 1
+            self.clear_widgets()
+            self.create_custom_tags()
 
     def clear_widgets(self):
-        # Удаление всех виджетов с экрана
         for widget in self.winfo_children():
-            widget.place_forget()
+            widget.grid_forget()
 
-    # Запуск приложения
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()
