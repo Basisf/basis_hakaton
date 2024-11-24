@@ -1,11 +1,11 @@
 #обратная связь - history-2025@mail.ru
 
+
+
+
 import customtkinter as ctk
 
-# global selected_region
-# global selected_size
-# selected_region = None
-# selected_size = None
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -14,9 +14,6 @@ class App(ctk.CTk):
 
         self.Tags = []
 
-        # with open(r'datap.txt', 'w', encoding='utf-8') as data:
-        #     data.write(f"-r-{selected_region}\n")
-        #     data.write(f"-s-{selected_size} \n")
 
         self.geometry("800x600")
         self.title("Привет")
@@ -55,7 +52,7 @@ class App(ctk.CTk):
             "Ямало-Ненецкий автономный округ"
         ]
         self.SizeList = [
-            'Микро', 'Малый', 'Средний'
+            'Микро бизнес', 'Малый бизнес', 'Средний бизнес'
         ]
         self.TypeBusinessList = [
             'Индивидуальный предприниматель',
@@ -114,15 +111,7 @@ class App(ctk.CTk):
         self.button_news.grid(row=2, column=1,padx=10,pady=10,sticky='nsew')
         self.button_recs.grid(row=2, column=3,padx=10,pady=10,sticky='nsew')
 
-    def third_que_done(self):
-        self.Tag_text = self.third_que.get()
 
-        if (self.Tag_text != '') and (self.Tag_text not in self.Tags):
-            self.Tags.append(self.Tag_text)
-            self.third_done.configure(state='disabled', text='Введено!', fg_color='#247087')
-            self.third_que.configure(state='disabled')
-        else:
-            self.create_fourth_page()
     def create_main_menu(self):
         self.clear_widgets()
 
@@ -154,20 +143,29 @@ class App(ctk.CTk):
             self.page += 1
             self.create_another_widgets()
 
-            # with open(r'datap.txt', 'w', encoding='utf-8') as data:
-            #     data.write(f"-r-{selected_region}\n")
+
 
         elif self.page == 2:
             selected_size = self.size_select.get()
             self.Tags.append(selected_size)
             self.page += 1
             self.create_main_menu()
+    def third_que_done(self):
+        self.Tag_text = self.third_que.get()
 
-            # with open(r'datap.txt',
+        if (self.Tag_text != '') and (self.Tag_text not in self.Tags):
+            self.Tags.append(self.Tag_text)
+            self.next_step.configure(state='disabled', text='Введено!', fg_color='#247087')
+            self.chosen_news()
+        else:
+            self.create_fourth_page()
+
 
     def clear_widgets(self):
         for widget in self.winfo_children():
             widget.grid_forget()
+    def ydal(self):
+        self.clear_widgets()
 
 
 if __name__ == "__main__":
